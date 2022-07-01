@@ -44,24 +44,29 @@
         <form>
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
+                <input id="name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter name">
                 <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">address</label>
-                <input name="address" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter address">
+                <input id="address" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter address">
+                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">phone</label>
+                <input id="phone" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter phone">
                 <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <input id="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
                 <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <input id="password" type="password" class="form-control" placeholder="Password">
             </div>
-            <button id="addButton" type="submit" class="btn btn-primary">Add</button>
+            <button id="addButton" onclick="addData()" type="submit" class="btn btn-primary">Add</button>
             <button id="updateButton" type="submit" class="btn btn-primary">Update</button>
         </form>
         </div>
@@ -134,6 +139,7 @@
             }
         })
 
+        // read data
         function readData() {
             $.ajax({
                 type:"GET",
@@ -160,6 +166,28 @@
             })
         }
         readData();
+
+        //create data
+        function addData(){
+            var name = $('#name').val();
+            var address = $('#address').val();
+            var phone = $('#phone').val();
+            var email = $('#email').val();
+            var password = $('#password').val();
+            console.log(name);
+
+            $.ajax({
+                type:"post",
+                dataType:'json',
+                data: {name:name,address:address,phone:phone,email:email,password:password},
+                url:"/laravelajax/public/user/store",
+                success:function(data){
+                    readData();
+                    console.log("data added successfully");
+                }
+            
+            })
+        }
       </script>
 
   </body>
