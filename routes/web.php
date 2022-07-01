@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get('/ajax/r',[AjaxController::class,'ajaxr'])->name('ajax.c');
 Route::get('/all/user',[AjaxController::class,'allUser'])->name('all.user');
+Route::post('/user/store',[AjaxController::class,'userPost'])->name('user.post');

@@ -17,4 +17,16 @@ class AjaxController extends Controller
         return response()->json($users);
     }
 
+    public function userPost(Request $request)
+    {
+        $data = User::create([
+            'name'=>$request->name,
+            'address'=>$request->address,
+            'phone'=>$request->phone,
+            'email'=> $request->email,
+            'password'=>$request->password
+        ]);
+        return response()->json($data);
+    }
+
 }
