@@ -45,28 +45,30 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
                 <input id="name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter name">
-                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                <span style="color: white ;" id="nameError" class="form-text text-muted"> </span>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">address</label>
                 <input id="address" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter address">
-                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                <span style="color: white ;" id="addressError" class="form-text text-muted"> </span>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">phone</label>
                 <input id="phone" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter phone">
-                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                <span style="color: white ;" id="phoneError" class="form-text text-muted"> </span>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
                 <input id="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
-                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                <span style="color: white ;" id="emailError" class="form-text text-muted"> </span>
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
                 <input id="password" type="password" class="form-control" placeholder="Password">
+                <span style="color: white ;" id="passwordError" class="form-text text-muted"> </span>
+
             </div>
-            <button id="addButton" onclick="addData()" type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" id="addButton" onclick="addData()" class="btn btn-primary">Add</button>
             <button id="updateButton" type="submit" class="btn btn-primary">Update</button>
         </form>
         </div>
@@ -144,7 +146,7 @@
             $.ajax({
                 type:"GET",
                 dataType:'json',
-                url: "/laravelajax/public/all/user",
+                url: "/all/user",
                 success:function(user) {
                     var data = ""
                     $.each(user, function(key,value) {
@@ -167,26 +169,42 @@
         }
         readData();
 
+        //clear data
+
+        function clearData(){
+          $('#name').val(' ');
+          $('#address').val(' ');
+          $('#phone').val(' ');
+          $('#email').val(' ');
+          $('#password').val(' ');
+        }
+
         //create data
         function addData(){
-            var name = $('#name').val();
-            var address = $('#address').val();
-            var phone = $('#phone').val();
-            var email = $('#email').val();
-            var password = $('#password').val();
-            console.log(name);
-
-            $.ajax({
-                type:"post",
-                dataType:'json',
-                data: {name:name,address:address,phone:phone,email:email,password:password},
-                url:"/laravelajax/public/user/store",
-                success:function(data){
-                    readData();
-                    console.log("data added successfully");
-                }
-            
-            })
+          var name = $('#name').val();
+          var address = $('#address').val();
+          var phone = $('#phone').val();
+          var email = $('#email').val();
+          var password = $('#password').val();
+        
+          $.ajax({
+            type: "post",
+            dataType:'json',
+            data: {name:name,address:address,phone:phone,email:email,password:password},
+            url:"/user/store",
+            success:function(data){
+                clearData();
+                readData();
+                console.log("data added successfully");
+            },
+            error:function(error){
+              $('#nameError').text(error.responseJSON.errors.name);
+              $('#addressError').text(error.responseJSON.errors.address);
+              $('#phoneError').text(error.responseJSON.errors.phone);
+              $('#emailError').text(error.responseJSON.errors.email);
+              $('#passwordError').text(error.responseJSON.errors.password);
+            }
+          })
         }
       </script>
 

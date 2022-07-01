@@ -19,12 +19,19 @@ class AjaxController extends Controller
 
     public function userPost(Request $request)
     {
+        $request->validate([
+            'name'      => 'required',
+            'address'   => 'required',
+            'phone'     => 'required',
+            'email'     => 'required',
+            'password'  => 'required',
+        ]);
         $data = User::create([
-            'name'=>$request->name,
-            'address'=>$request->address,
-            'phone'=>$request->phone,
-            'email'=> $request->email,
-            'password'=>$request->password
+            'name'      => $request->name,
+            'address'   => $request->address,
+            'phone'     => $request->phone,
+            'email'     => $request->email,
+            'password'  => $request->password
         ]);
         return response()->json($data);
     }
