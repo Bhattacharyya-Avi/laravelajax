@@ -159,8 +159,8 @@
                         data = data + "<td>"+value.email+"</td>"
                         data = data + "<td>"+value.phone+"</td>"
                         data = data + "<td>"
-                        data = data + "<button href=''class='btn btn-primary' onclick='editData("+value.id+")'>edit</button>"
-                        data = data + " <a href=''class='btn btn-info'>delete</a>"
+                        data = data + "<button class='btn btn-primary' onclick='editData("+value.id+")'>edit</button>"
+                        data = data + "<button class='btn btn-info' onclick='deleteData("+value.id+")'>delete</button>"
                         data = data + "</td>"
                         data = data + "</tr>"
                     })
@@ -171,7 +171,6 @@
         readData();
 
         //clear data
-
         function clearData(){
           $('#name').val(' ');
           $('#address').val(' ');
@@ -254,6 +253,19 @@
               $('#phoneError').text(error.responseJSON.errors.phone);
               $('#emailError').text(error.responseJSON.errors.email);
               $('#passwordError').text(error.responseJSON.errors.password);
+            }
+          })
+        }
+
+        // delete data
+        function deleteData(id) {
+          $.ajax({
+            type: "GET",
+            dataType: "json",
+            url:"/user/delete/"+id,
+            success:function(data){
+              readData();
+              console.log("data deleted");
             }
           })
         }

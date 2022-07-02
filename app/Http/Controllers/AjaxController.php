@@ -58,4 +58,13 @@ class AjaxController extends Controller
 
     }
 
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        if($user){
+            $user->delete();
+        }
+        return response()->json($user);
+    }
+
 }
