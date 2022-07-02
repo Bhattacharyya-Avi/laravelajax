@@ -21,3 +21,5 @@ Route::get('/', function () {
 Route::get('/ajax/r',[AjaxController::class,'ajaxr'])->name('ajax.c');
 Route::get('/all/user',[AjaxController::class,'allUser'])->name('all.user');
 Route::post('/user/store',[AjaxController::class,'userPost'])->name('user.post');
+Route::get('/user/edit/{id}',[AjaxController::class,'userEdit'])->name('user.edit');
+Route::post('/user/store/{id}',[AjaxController::class, 'userUpdate'])->name('user.update');

@@ -68,8 +68,9 @@
                 <span style="color: white ;" id="passwordError" class="form-text text-muted"> </span>
 
             </div>
+            <input type="hidden" id="id">
             <button type="submit" id="addButton" onclick="addData()" class="btn btn-primary">Add</button>
-            <button id="updateButton" type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" id="updateButton" onclick="updateData()" class="btn btn-primary">Update</button>
         </form>
         </div>
       </div>
@@ -158,7 +159,7 @@
                         data = data + "<td>"+value.email+"</td>"
                         data = data + "<td>"+value.phone+"</td>"
                         data = data + "<td>"
-                        data = data + "<a href=''class='btn btn-primary'>edit</a>"
+                        data = data + "<button href=''class='btn btn-primary' onclick='editData("+value.id+")'>edit</button>"
                         data = data + " <a href=''class='btn btn-info'>delete</a>"
                         data = data + "</td>"
                         data = data + "</tr>"
@@ -196,6 +197,56 @@
                 clearData();
                 readData();
                 console.log("data added successfully");
+            },
+            error:function(error){
+              $('#nameError').text(error.responseJSON.errors.name);
+              $('#addressError').text(error.responseJSON.errors.address);
+              $('#phoneError').text(error.responseJSON.errors.phone);
+              $('#emailError').text(error.responseJSON.errors.email);
+              $('#passwordError').text(error.responseJSON.errors.password);
+            }
+          })
+        }
+
+        //edit data
+        function editData(id){
+          $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/user/edit/"+id,
+            success:function(data){
+              // show update button
+              $('#addButton').hide();
+              $('#updateButton').show();
+
+              $('#id').val(data.id);
+              $('#name').val(data.name);
+              $('#address').val(data.address);
+              $('#phone').val(data.phone);
+              $('#email').val(data.email);
+              $('#password').val(data.password);
+            }
+          })
+        }
+
+        // update data
+        function updateData(){
+          var id = $('#id').val();
+          var name = $('#name').val();
+          var address = $('#address').val();
+          var phone = $('#phone').val();
+          var email = $('#email').val();
+          var password = $('#password').val();
+
+          $.ajax({
+            type: "post",
+            dataType:"json",
+            data: {name:name,address:address,phone:phone,email:email,password:password},
+            url: "/user/store/"+id,
+
+            success:function(data){
+              readData();
+              console.log("data updated");
             },
             error:function(error){
               $('#nameError').text(error.responseJSON.errors.name);
