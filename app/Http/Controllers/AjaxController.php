@@ -31,9 +31,31 @@ class AjaxController extends Controller
             'address'   => $request->address,
             'phone'     => $request->phone,
             'email'     => $request->email,
-            'password'  => $request->password
+            'password'  => bcrypt($request->password)
         ]);
         return response()->json($data);
+    }
+
+    public function userEdit($id)
+    {
+        $user = User::find($id);
+        return response()->json($user);
+    }
+
+    public function userUpdate(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->update([
+                'name'      => $request->name,
+                'address'   => $request->address,
+                'phone'     => $request->phone,
+                'email'     => $request->email,
+                'password'  => bcrypt($request->password),
+            ]);
+            return response()->json($user);
+        }
+
     }
 
 }
